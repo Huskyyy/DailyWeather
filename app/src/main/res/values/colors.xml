@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorPrimaryWhite">#4E63CB</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00695C</color>
+    <color name="colorPrimaryWhite">#80CBC4</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+    <color name="colorRefreshProgress1">#80CBC4</color>
+    <color name="colorRefreshProgress2">#009688</color>
+    <color name="colorRefreshProgress3">#00695C</color>
+
+    <color name="colorGray">#AAAAAA</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <!--<color name="colorGradientStart">#ff2d9a59</color>-->
+    <!--<color name="colorGradientCenter">#ff42959a</color>-->
+    <!--<color name="colorGradientStop">#ff23729a</color>-->
+
+    <color name="colorGradientStart">#00695C</color>
+    <color name="colorGradientCenter">#009688</color>
+    <color name="colorGradientStop">#80CBC4</color>
+
+    <color name="colorWeatherList">#00897B</color>
+    <color name="colorWeatherListItem">#26A69A</color>
+
+</resources>

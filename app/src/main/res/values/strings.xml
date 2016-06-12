@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">DailyWeather</string>
+
+    <string name="action_add_city">添加城市</string>
+    <string name="network_unavailable">数据更新失败，请检测您的网络连接</string>
+    <string name="update_failure">无法连接到服务器</string>
+
+    <string name="allocated_in">位于</string>
+    <string name="search_hint">搜索要添加的城市</string>
+    <string name="search_no_result">没有符合的搜索结果ORZ</string>
+
+    <string name="celcius">°</string>
+    <string name="air_quality">空气质量: </string>
+    <string name="humidity">湿度</string>
+    <string name="rain">降水概率</string>
+    <string name="aqi">空气质量指数</string>
+    <string name="uv_light">紫外线强度</string>
+    <string name="air_pressure">气压</string>
+    <string name="data_not_updated">(数据未更新)</string>
+    <string name="hours_forcast">24小时气温</string>
+    <string name="weekly_forcast">未来一周天气</string>
+    <string name="today">今天</string>
+</resources>

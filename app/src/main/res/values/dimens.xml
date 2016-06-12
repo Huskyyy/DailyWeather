@@ -1,0 +1,43 @@
+<resources>
+    <dimen name="activity_appbar_elevation">4dp</dimen>
+    <dimen name="base_padding">4dp</dimen>
+
+    <dimen name="weather_list_item_margin_vertical">4dp</dimen>
+    <dimen name="weather_list_item_padding">4dp</dimen>
+    <dimen name="weather_list_item_height">100dp</dimen>
+    <dimen name="weather_list_item_temp_margin_left">4dp</dimen>
+    <dimen name="weather_list_item_temp_width">120dp</dimen>
+    <dimen name="weather_list_item_temp_height">72dp</dimen>
+    <dimen name="weather_list_item_temp_text_size">56sp</dimen>
+    <dimen name="weather_list_item_other_text_margin_left">16dp</dimen>
+    <dimen name="weather_list_item_other_text_margin">2dp</dimen>
+    <dimen name="weather_list_item_other_text_size">18sp</dimen>
+    <dimen name="weather_list_item_image_width">72dp</dimen>
+    <dimen name="weather_list_item_image_margin_right">32dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="city_list_item_height">60dp</dimen>
+    <dimen name="city_list_item_margin">30dp</dimen>
+    <dimen name="city_list_item_text_size">20sp</dimen>
+    <dimen name="city_list_item_text_small_size">16dp</dimen>
+
+    <dimen name="weather_info_actionbar_elevation">4dp</dimen>
+    <dimen name="weather_info_weather_text_size">30sp</dimen>
+    <dimen name="weather_info_temp_text_size">100sp</dimen>
+    <dimen name="weather_info_aqi_text_size">20sp</dimen>
+    <dimen name="weather_info_other_text_size">18sp</dimen>
+    <dimen name="weather_info_other_text_size_s">15sp</dimen>
+    <dimen name="weather_info_other_text_size_xs">12sp</dimen>
+    <dimen name="weather_info_weather_text_margin_top">60dp</dimen>
+    <dimen name="weather_info_temp_text_margin_top">8dp</dimen>
+    <dimen name="weather_info_aqi_text_margin_top">8dp</dimen>
+    <dimen name="weather_info_line_chart_margin_top">30dp</dimen>
+    <dimen name="weather_info_other_text_margin_vertical">50dp</dimen>
+    <dimen name="weather_info_other_text_margin_vertical_s">20dp</dimen>
+    <dimen name="weather_info_other_text_margin_vertical_ss">10dp</dimen>
+    <dimen name="weather_info_other_text_margin_horizontal">12dp</dimen>
+    <dimen name="weather_info_forcast_image_size">36dp</dimen>
+
+</resources>

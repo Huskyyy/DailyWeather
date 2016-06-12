@@ -3,7 +3,7 @@
 一个简单的天气APP，练习rxjava+retrofit的使用。 
 
 ##预览
- <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/1.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/1.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/1.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/1.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/1.jpg" width = "300" height = "500" />
+ <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/1.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/2.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/3.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/4.jpg" width = "300" height = "500" /> <img src="https://github.com/Huskyyy/DailyWeather/blob/master/Screenshots/5.jpg" width = "300" height = "500" />
 
 ##功能
 

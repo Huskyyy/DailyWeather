@@ -205,7 +205,7 @@ public class MyAnimator extends SimpleItemAnimator {
         final View view = holder.itemView;
         final ViewPropertyAnimatorCompat animation = ViewCompat.animate(view);
         mRemoveAnimations.add(holder);
-        animation.setDuration(getRemoveDuration())
+        animation.setDuration(0)
                 .alpha(0)
                 .setListener(new VpaListenerAdapter() {
             @Override

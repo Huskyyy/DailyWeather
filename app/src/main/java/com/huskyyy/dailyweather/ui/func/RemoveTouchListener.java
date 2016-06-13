@@ -31,6 +31,8 @@ public class RemoveTouchListener implements RecyclerView.OnItemTouchListener {
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         // 防止在动画结束之前再次触发
         if(rv.isComputingLayout() || rv.isAnimating()) {
+            Log.e("isComputingLayout",""+rv.isComputingLayout());
+            Log.e("isAnimating",""+rv.isAnimating());
             return false;
         }
         int action = e.getActionMasked();

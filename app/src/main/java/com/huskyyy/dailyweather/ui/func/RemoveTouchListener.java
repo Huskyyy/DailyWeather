@@ -1,11 +1,8 @@
 package com.huskyyy.dailyweather.ui.func;
 
 import android.animation.Animator;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -31,8 +28,6 @@ public class RemoveTouchListener implements RecyclerView.OnItemTouchListener {
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         // 防止在动画结束之前再次触发
         if(rv.isComputingLayout() || rv.isAnimating()) {
-            Log.e("isComputingLayout",""+rv.isComputingLayout());
-            Log.e("isAnimating",""+rv.isAnimating());
             return false;
         }
         int action = e.getActionMasked();

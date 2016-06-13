@@ -26,8 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpHelper {
 
     public static final String BASE_URL = "http://route.showapi.com/";
-    public static final String APP_ID = "18808";
-    public static final String APP_SIGN = "51159ede649f40eb8fde09b0a9364390";
+    public static final String APP_ID = "YourAppId";
+    public static final String APP_SIGN = "YourAppSign";
     private static WeatherApi weatherApi;
     private static CityApi cityApi;
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();

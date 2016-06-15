@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.security.auth.login.LoginException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -134,7 +137,7 @@ public class MainActivity extends BaseActivity {
         weatherListAdapter.setOnItemClickListener(getOnItemClickListener());
         weatherListView.setAdapter(weatherListAdapter);
         weatherListView.setItemAnimator(new MyAnimator());
-        weatherListView.addOnItemTouchListener(new RemoveTouchListener());
+        weatherListView.addOnItemTouchListener(new RemoveTouchListener(weatherListView));
     }
 
     private void setupSwipeRefreshLayout() {
@@ -232,7 +235,7 @@ public class MainActivity extends BaseActivity {
             stopRefreshing();
             return;
         }
-
+        Log.e("startRefresh","xx");
         startRefreshing();
         final int[] updateCount = new int[1];
 
@@ -255,6 +258,7 @@ public class MainActivity extends BaseActivity {
                 updateCount[0]++;
                 if(updateCount[0] == list.size()) { //此时已更新完所有天气信息
                     stopRefreshing();
+                    Log.e("stopRefresh","xx");
                     weatherListAdapter.notifyDataSetChanged();
                 }
             }

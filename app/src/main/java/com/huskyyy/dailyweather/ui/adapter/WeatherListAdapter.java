@@ -43,16 +43,7 @@ public class WeatherListAdapter extends RecyclerView.Adapter<WeatherListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        WeatherInfo w = mList.get(position);
-        holder.weatherInfo = w;
-        //holder.temperatureTextView.setText(""+w.orderNum);
-        holder.temperatureTextView.setText(w.nowState.temperature + "°");
-        holder.cityTextView.setText(w.cityInfo.name);
-        holder.weatherTextView.setText(w.nowState.weather);
-        Glide.with(mContext)
-                .load(w.nowState.weatherPic)
-                .fitCenter()
-                .into(holder.weatherImage);
+        bindView(holder, position);
     }
 
     @Override
@@ -91,6 +82,19 @@ public class WeatherListAdapter extends RecyclerView.Adapter<WeatherListAdapter.
         void onClick(View v, WeatherInfo w);
     }
 
+    private void bindView(ViewHolder holder, int position) {
+        WeatherInfo w = mList.get(position);
+        holder.weatherInfo = w;
+        //holder.temperatureTextView.setText(""+w.orderNum);
+        holder.temperatureTextView.setText(w.nowState.temperature + "°");
+        holder.cityTextView.setText(w.cityInfo.name);
+        holder.weatherTextView.setText(w.nowState.weather);
+        Glide.with(mContext)
+                .load(w.nowState.weatherPic)
+                .fitCenter()
+                .into(holder.weatherImage);
+    }
+
     public void removeItem(int pos){
         mList.remove(pos);
         notifyItemRemoved(pos);
@@ -102,6 +106,30 @@ public class WeatherListAdapter extends RecyclerView.Adapter<WeatherListAdapter.
 //                vh.temperatureTextView.setText(""+tmp);
 //            else
 //                notifyItemChanged(i);
+        }
+    }
+
+    public void dragSort(int fromPos, int toPos){
+        if(fromPos == toPos){
+            return;
+        }
+
+        WeatherInfo info = mList.get(fromPos);
+        mList.remove(fromPos);
+        mList.add(toPos, info);
+
+        int min = Math.min(fromPos, toPos), max = Math.max(fromPos, toPos);
+        for(int i = min; i  <= max; i++) {
+            mList.get(i).orderNum = i;
+            ViewHolder holder = (ViewHolder)mRv.findViewHolderForAdapterPosition(i);
+            // 这里是一个trick，先将数据和变换后的位置的数据绑定，再恢复到原位置。
+            // 如果屏幕卡顿或许就能看到这个Bug了。。。
+            if(holder != null){
+                bindView(holder, i);
+                holder.itemView.setTranslationY(0);
+            }else{
+                notifyItemChanged(i);
+            }
         }
     }
 }

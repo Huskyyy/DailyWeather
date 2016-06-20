@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +18,7 @@ import com.huskyyy.dailyweather.model.WeatherResponse;
 import com.huskyyy.dailyweather.model.WeatherInfo;
 import com.huskyyy.dailyweather.net.HttpHelper;
 import com.huskyyy.dailyweather.ui.adapter.WeatherListAdapter;
-import com.huskyyy.dailyweather.ui.func.MyAnimator;
-import com.huskyyy.dailyweather.ui.func.RemoveTouchListener;
+import com.huskyyy.dailyweather.ui.func.MyItemTouchHelperCallback;
 import com.huskyyy.dailyweather.util.ToastUtils;
 import com.litesuits.orm.db.assit.QueryBuilder;
 
@@ -28,13 +27,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -54,6 +52,8 @@ public class MainActivity extends BaseActivity {
     private Unbinder unbinder;
 
     private boolean fromAddCityActivity;
+    private boolean firstOpen;
+    private boolean refreshing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +64,9 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-
         weatherInfoList = new ArrayList<>();
         setupRecyclerView();
         setupSwipeRefreshLayout();
-
-        QueryBuilder queryBuilder = new QueryBuilder(WeatherInfo.class);
-        queryBuilder.appendOrderAscBy("orderNum");
-        weatherInfoList.addAll(App.mDb.query(queryBuilder));
     }
 
     @Override
@@ -121,6 +116,7 @@ public class MainActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         saveData();
+        stopRefreshing();
     }
 
     @Override
@@ -133,11 +129,12 @@ public class MainActivity extends BaseActivity {
     private void setupRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         weatherListView.setLayoutManager(layoutManager);
-        weatherListAdapter = new WeatherListAdapter(this, weatherInfoList, weatherListView);
+        weatherListAdapter = new WeatherListAdapter(this, weatherInfoList);
         weatherListAdapter.setOnItemClickListener(getOnItemClickListener());
         weatherListView.setAdapter(weatherListAdapter);
-        weatherListView.setItemAnimator(new MyAnimator());
-        weatherListView.addOnItemTouchListener(new RemoveTouchListener(weatherListView));
+        ItemTouchHelper.Callback callback = new MyItemTouchHelperCallback(weatherListAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(weatherListView);
     }
 
     private void setupSwipeRefreshLayout() {
@@ -163,8 +160,66 @@ public class MainActivity extends BaseActivity {
         };
     }
 
+    private void loadData() {
+
+        if(!firstOpen) {
+            firstOpen = true;
+            loadDataFromDbFirst();
+        }else{
+            if(weatherInfoList.size() == 0){
+                initCurrentPositionWeather();
+                return;
+            }
+            updateData();
+        }
+    }
+
+    private void loadDataFromDbFirst() {
+        startRefreshing();
+        Subscriber<List<WeatherInfo>> subscriber = new Subscriber<List<WeatherInfo>>() {
+            @Override
+            public void onNext(List<WeatherInfo> list) {
+                weatherInfoList.addAll(list);
+            }
+
+            @Override
+            public void onCompleted() {
+                if(weatherInfoList.size() == 0){
+                    initCurrentPositionWeather();
+                    return;
+                }
+                updateData();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+        };
+
+        Subscription subscription = Observable.create(new Observable.OnSubscribe<List<WeatherInfo>>() {
+                    @Override
+                    public void call(Subscriber<? super List<WeatherInfo>> subscriber) {
+                        QueryBuilder queryBuilder = new QueryBuilder(WeatherInfo.class);
+                        queryBuilder.appendOrderAscBy("orderNum");
+                        List<WeatherInfo> list = App.mDb.query(queryBuilder);
+                        subscriber.onNext(list);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+        addSubscription(subscription);
+    }
+
     // 初始化当前位置天气信息
     private void initCurrentPositionWeather() {
+
+        if(!HttpHelper.isNetworkAvailable(this)){
+            ToastUtils.showShort(R.string.network_unavailable);
+            stopRefreshing();
+            return;
+        }
 
         startRefreshing();
 
@@ -204,18 +259,7 @@ public class MainActivity extends BaseActivity {
         addSubscription(subscription);
     }
 
-    private void loadData() {
-
-        if(weatherInfoList.size() == 0){
-            if(HttpHelper.isNetworkAvailable(this)){
-                initCurrentPositionWeather();
-            }else {
-                ToastUtils.showShort(R.string.network_unavailable);
-                stopRefreshing();
-            }
-            return;
-        }
-
+    private void updateData() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHH");
         Date currentDate = new Date(System.currentTimeMillis());
         final String date = formatter.format(currentDate);
@@ -227,15 +271,16 @@ public class MainActivity extends BaseActivity {
                 list.add(info);
         }
         if(list.size() == 0){
+            weatherListAdapter.notifyDataSetChanged();
             stopRefreshing();
             return;
         }
         if(!HttpHelper.isNetworkAvailable(this)){
+            weatherListAdapter.notifyDataSetChanged();
             ToastUtils.showShort(R.string.network_unavailable);
             stopRefreshing();
             return;
         }
-        Log.e("startRefresh","xx");
         startRefreshing();
         final int[] updateCount = new int[1];
 
@@ -258,7 +303,6 @@ public class MainActivity extends BaseActivity {
                 updateCount[0]++;
                 if(updateCount[0] == list.size()) { //此时已更新完所有天气信息
                     stopRefreshing();
-                    Log.e("stopRefresh","xx");
                     weatherListAdapter.notifyDataSetChanged();
                 }
             }
@@ -296,8 +340,6 @@ public class MainActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
-
-
 
     private void addCityWeather(String areaId){
 
@@ -353,13 +395,25 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startRefreshing(){
-        if(swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing())
+
+        refreshing = true;
+        if(swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(true);
+        }
     }
 
     private void stopRefreshing(){
-        if(swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing())
-            swipeRefreshLayout.setRefreshing(false);
+
+        refreshing = false;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(refreshing == false && swipeRefreshLayout != null
+                        && swipeRefreshLayout.isRefreshing()){
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        }, 1000);
     }
 
 }

@@ -340,7 +340,8 @@ public class WeatherInfoActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(refreshing == false && swipeRefreshLayout != null){
+                if(refreshing == false && swipeRefreshLayout != null
+                        && swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }

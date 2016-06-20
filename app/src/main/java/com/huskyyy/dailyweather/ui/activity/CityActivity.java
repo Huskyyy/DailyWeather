@@ -199,6 +199,5 @@ public class CityActivity extends BaseActivity {
                 }
             }
         }, 1000);
-
     }
 }

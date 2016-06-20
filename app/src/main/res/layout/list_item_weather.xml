@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/weather_list_item_margin_vertical"
     android:layout_marginBottom="@dimen/weather_list_item_margin_vertical"
+    app:cardBackgroundColor="@color/colorWeatherListItem"
     app:cardCornerRadius="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/weather_list_item_height"
-        android:background="@drawable/bg_weather_list_item">
+        android:layout_height="@dimen/weather_list_item_height">
 
         <TextView
             android:id="@+id/tv_temperature"
@@ -40,7 +40,6 @@
             android:layout_alignBottom="@id/center_line"
             android:layout_marginLeft="@dimen/weather_list_item_other_text_margin_left"
             android:layout_marginBottom="@dimen/weather_list_item_other_text_margin"
-            android:text="北京"
             android:textSize="@dimen/weather_list_item_other_text_size"/>
 
         <TextView
@@ -51,7 +50,6 @@
             android:layout_alignTop="@id/center_line"
             android:layout_marginLeft="@dimen/weather_list_item_other_text_margin_left"
             android:layout_marginTop="@dimen/weather_list_item_other_text_margin"
-            android:text="晴"
             android:textSize="@dimen/weather_list_item_other_text_size"/>
 
         <ImageView
@@ -60,7 +58,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/weather_list_item_image_margin_right"
-            android:src="@mipmap/ic_launcher"
             android:scaleType="fitCenter"/>
 
     </RelativeLayout>
